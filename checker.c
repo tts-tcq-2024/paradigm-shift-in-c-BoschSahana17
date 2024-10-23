@@ -1,35 +1,21 @@
-#include <stdio.h>
-#include <assert.h>
- 
-int checktemperature(float temperature) {
-   if(temperature < 0 || temperature > 45) {
-    printf("Temperature out of range!\n"); 
-    return 0;
-   }
-   return 1;
-}
- 
-int checksoc(float soc) {
-   if(soc < 20 || soc > 80) {
-    printf("State of Charge out of range!\n"); 
-    return 0;
-   }
-   return 1;
-}
- 
-int checkchargerate(float chargeRate) {
-    if(chargeRate > 0.8) {
-      printf("Charge Rate out of range!\n");
-      return 0;
-    }
-   return 1;
-}
- 
-int batteryIsOk(float temperature, float soc, float chargeRate) {
-  return (checktemperature(temperature) && checksoc(soc) && checkchargerate(chargeRate));
-}
- 
+#include "Param_Checker.h"
+#include "monitor_battery.h"
+
 int main() {
-  assert(batteryIsOk(25, 70, 0.7));
-  assert(!batteryIsOk(50, 85, 0));
+    ParameterState temperatureState;
+    ParameterState socState;
+    ParameterState chargeRateState;
+
+    checkTemperature(46, &temperatureState); 
+    checkTemperature(39, &temperatureState); 
+    checkTemperature(25, &temperatureState); 
+
+    checkSoc(85, &socState); 
+    checkSoc(76, &socState); 
+    checkSoc(50, &socState); 
+
+    checkChargeRate(0.85, &chargeRateState); 
+    checkChargeRate(0.77, &chargeRateState); 
+    checkChargeRate(0.70, &chargeRateState); 
+    return 0;
 }
